@@ -1,15 +1,33 @@
-# Binaries for programs and plugins
+*.out
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
 *.test
-
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
+*~
+*.swp
+*.a
+*.jar
+*.iml
+/.idea
+/.vscode
+/output*
+/**/*.zip
+/**/etc
+/**/var
+/**/coverage.*
+/**/.DS_Store
+/**/libexec
+/**/*.db
+/**/*.db.lock
+/**/*.pyc
+/**/*debug.test
+/**/debug
+/**/*.log
+/cover*.out
+/example/**/*-cert
+/**/processes.history*
+/**/node_modules
+/**/__package
+docs/_build
