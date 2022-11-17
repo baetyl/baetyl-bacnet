@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221108044136-8321859db5e3
+	github.com/matryer/is v1.4.0
 	github.com/stretchr/testify v1.7.0
 	gopkg.in/yaml.v2 v2.2.8
 )

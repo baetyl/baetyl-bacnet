@@ -1,4 +1,4 @@
-MODULE:=bacnet
+MODULE:=baetyl-bacnet
 PLATFORM_ALL:=darwin/amd64 linux/amd64 linux/arm64 linux/arm/v7
 
 export DOCKER_CLI_EXPERIMENTAL=enabled
