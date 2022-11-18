@@ -1,11 +1,12 @@
 package main
 
 import (
+	"strconv"
+
+	"github.com/baetyl/baetyl-bacnet/baetyl-bacnet"
 	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
 	"github.com/baetyl/baetyl-go/v2/utils"
 	"gopkg.in/yaml.v2"
-
-	"github.com/baetyl/baetyl-bacnet/bacnet"
 )
 
 func main() {
@@ -14,28 +15,26 @@ func main() {
 		if err != nil {
 			return err
 		}
-		bac, err := bacnet.NewBacnet(ctx, *cfg)
+		bac, err := baetyl_bacnet.NewBacnet(ctx, cfg)
 		if err != nil {
 			return err
 		}
-		bac.Start()
 		defer bac.Close()
 		ctx.Wait()
 		return nil
 	})
 }
 
-func genConfig(ctx dm.Context) (*bacnet.Config, error) {
-	cfg := &bacnet.Config{}
-	var slaves []bacnet.SlaveConfig
-	var jobs []bacnet.Job
+func genConfig(ctx dm.Context) (*baetyl_bacnet.Config, error) {
+	cfg := &baetyl_bacnet.Config{}
+	var slaves []baetyl_bacnet.SlaveConfig
+	var jobs []baetyl_bacnet.Job
 
 	// generate slave
-	var slave bacnet.SlaveConfig
+	var slave baetyl_bacnet.SlaveConfig
 	if err := yaml.Unmarshal([]byte(ctx.GetDriverConfig()), &slave); err != nil {
 		return nil, err
 	}
-	slaves = append(slaves, slave)
 
 	// generate job
 	for _, devInfo := range ctx.GetAllDevices() {
@@ -43,13 +42,16 @@ func genConfig(ctx dm.Context) (*bacnet.Config, error) {
 		if accessConfig.Custom == nil {
 			continue
 		}
-		var job bacnet.Job
+		slave.Device = devInfo.Name
+		var job baetyl_bacnet.Job
 		if err := yaml.Unmarshal([]byte(*accessConfig.Custom), &job); err != nil {
 			return nil, err
 		}
+		job.Interval = slave.Interval
+		job.Device = slave.Device
 
 		// generate jobMap
-		var jobMaps []bacnet.MapConfig
+		jobMaps := make(map[string]baetyl_bacnet.Property)
 		devTpl, err := ctx.GetAccessTemplates(&devInfo)
 		if err != nil {
 			return nil, err
@@ -57,18 +59,23 @@ func genConfig(ctx dm.Context) (*bacnet.Config, error) {
 		if devTpl != nil && devTpl.Properties != nil && len(devTpl.Properties) > 0 {
 			for _, prop := range devTpl.Properties {
 				if visitor := prop.Visitor.Custom; visitor != nil {
-					var jobMap bacnet.MapConfig
+					var jobMap baetyl_bacnet.Property
 					if err := yaml.Unmarshal([]byte(*visitor), &jobMap); err != nil {
 						return nil, err
 					}
 					jobMap.Id = prop.Id
 					jobMap.Name = prop.Name
 					jobMap.Type = prop.Type
-					jobMaps = append(jobMaps, jobMap)
+					jobMap.Mode = prop.Mode
+					jobMaps[strconv.FormatUint(uint64(jobMap.BacnetType), 10)+":"+
+						strconv.FormatUint(uint64(jobMap.BacnetAddress), 10)] = jobMap
 				}
 			}
 		}
-		job.Maps = jobMaps
+		slave.Device = devInfo.Name
+		slave.DeviceId = job.DeviceId
+		slaves = append(slaves, slave)
+		job.Properties = jobMaps
 		jobs = append(jobs, job)
 	}
 	cfg.Jobs = jobs
