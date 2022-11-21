@@ -2,6 +2,8 @@ package baetyl_bacnet
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -86,7 +88,11 @@ func (w *Worker) Execute() error {
 			if err != nil {
 				return err
 			}
-			args[param] = temp[mappingName]
+			value, ok := temp[mappingName]
+			if !ok {
+				return errors.New(fmt.Sprintf("mapping name %v not exist", mappingName))
+			}
+			args[param] = value
 		}
 		modelValue, err := dm.ExecExpression(model.Expression, args, model.Type)
 		if err != nil {
