@@ -2,15 +2,18 @@ package baetyl_bacnet
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"strconv"
 	"time"
+
+	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
+	"github.com/baetyl/baetyl-go/v2/log"
+	v1 "github.com/baetyl/baetyl-go/v2/spec/v1"
 
 	"github.com/baetyl/baetyl-bacnet/bacip"
 	"github.com/baetyl/baetyl-bacnet/bacnet"
 	"github.com/baetyl/baetyl-bacnet/dmp"
-	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
-	"github.com/baetyl/baetyl-go/v2/log"
-	v1 "github.com/baetyl/baetyl-go/v2/spec/v1"
 )
 
 type Worker struct {
@@ -86,7 +89,11 @@ func (w *Worker) Execute() error {
 			if err != nil {
 				return err
 			}
-			args[param] = temp[mappingName]
+			value, ok := temp[mappingName]
+			if !ok {
+				return errors.New(fmt.Sprintf("mapping name %s not exist", mappingName))
+			}
+			args[param] = value
 		}
 		modelValue, err := dm.ExecExpression(model.Expression, args, model.Type)
 		if err != nil {
