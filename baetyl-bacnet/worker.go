@@ -2,8 +2,6 @@ package baetyl_bacnet
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -81,23 +79,28 @@ func (w *Worker) Execute() error {
 		args := make(map[string]interface{})
 		params, err := dm.ParseExpression(model.Expression)
 		if err != nil {
-			return err
+			w.log.Warn("parse expression failed", log.Any("expression", model.Expression), log.Error(err))
+			continue
 		}
 		for _, param := range params {
 			id := param[1:]
 			mappingName, err := dmp.GetMappingName(id, accessTemplate)
 			if err != nil {
-				return err
+				w.log.Warn("get mapping failed", log.Any("id", id), log.Error(err))
+				continue
 			}
 			value, ok := temp[mappingName]
 			if !ok {
-				return errors.New(fmt.Sprintf("mapping name %s not exist", mappingName))
+				w.log.Warn("mapping name not exist", log.Any("name", mappingName))
+				continue
 			}
 			args[param] = value
 		}
 		modelValue, err := dm.ExecExpression(model.Expression, args, model.Type)
 		if err != nil {
-			return err
+			w.log.Warn("exec expression failed", log.Any("expression", model.Expression),
+				log.Any("args", args), log.Any("mapping type", model.Type), log.Error(err))
+			continue
 		}
 		r[model.Attribute] = modelValue
 	}
