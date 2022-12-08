@@ -16,10 +16,11 @@ type SlaveConfig struct {
 }
 
 type Job struct {
-	Device     string              `yaml:"device" json:"device"`
-	DeviceId   uint32              `yaml:"deviceId" json:"deviceId"`
-	Properties map[string]Property `yaml:"properties" json:"properties"`
-	Interval   time.Duration       `yaml:"interval" json:"interval" default:"15s"`
+	Device        string              `yaml:"device" json:"device"`
+	DeviceId      uint32              `yaml:"deviceId" json:"deviceId"`
+	AddressOffset uint                `yaml:"addressOffset" json:"addressOffset"`
+	Properties    map[string]Property `yaml:"properties" json:"properties"`
+	Interval      time.Duration       `yaml:"interval" json:"interval" default:"15s"`
 }
 
 type Property struct {
