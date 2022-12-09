@@ -67,6 +67,7 @@ func genConfig(ctx dm.Context) (*baetyl_bacnet.Config, error) {
 					jobMap.Name = prop.Name
 					jobMap.Type = prop.Type
 					jobMap.Mode = prop.Mode
+					jobMap.BacnetAddress = jobMap.BacnetAddress + job.AddressOffset
 					jobMaps[strconv.FormatUint(uint64(jobMap.BacnetType), 10)+":"+
 						strconv.FormatUint(uint64(jobMap.BacnetAddress), 10)] = jobMap
 				}
