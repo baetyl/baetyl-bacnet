@@ -131,7 +131,7 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 
 				objID := bacnet.ObjectID{
 					Type:     bacnet.ObjectType(prop.BacnetType),
-					Instance: bacnet.ObjectInstance(prop.BacnetAddress + w.job.AddressOffset),
+					Instance: bacnet.ObjectInstance(prop.BacnetAddress),
 				}
 				err = writeValue(w.slave.bacnetClient, w.slave.device, objID, bacnet.PropertyValue{
 					Type:  bacnet.TypeBoolean,

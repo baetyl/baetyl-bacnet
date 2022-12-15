@@ -34,7 +34,7 @@ func (w *Worker) Execute() error {
 	for _, prop := range w.job.Properties {
 		objID := bacnet.ObjectID{
 			Type:     bacnet.ObjectType(prop.BacnetType),
-			Instance: bacnet.ObjectInstance(prop.BacnetAddress + w.job.AddressOffset),
+			Instance: bacnet.ObjectInstance(prop.BacnetAddress),
 		}
 		d, err := readValue(w.slave.bacnetClient, w.slave.device, objID)
 		if err != nil {
