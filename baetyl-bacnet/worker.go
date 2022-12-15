@@ -2,7 +2,6 @@ package baetyl_bacnet
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
@@ -31,43 +30,18 @@ func NewWorker(job Job, slave *Slave, ctx dm.Context, log *log.Logger) *Worker {
 }
 
 func (w *Worker) Execute() error {
-	prop := bacnet.PropertyIdentifier{Type: bacnet.ObjectList, ArrayIndex: new(uint32)}
-	*prop.ArrayIndex = uint32(0)
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	d, err := w.slave.bacnetClient.ReadProperty(ctx, w.slave.device, bacip.ReadProperty{
-		ObjectID: w.slave.device.ID,
-		Property: prop,
-	})
-	cancel()
-	if err != nil {
-		return err
-	}
 	temp := make(map[string]interface{})
-	for i := 1; i <= int(d.(uint32)); i++ {
-		*prop.ArrayIndex = uint32(i)
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-		d, err := w.slave.bacnetClient.ReadProperty(ctx, w.slave.device, bacip.ReadProperty{
-			ObjectID: w.slave.device.ID,
-			Property: prop,
-		})
-		cancel()
+	for _, prop := range w.job.Properties {
+		objID := bacnet.ObjectID{
+			Type:     bacnet.ObjectType(prop.BacnetType),
+			Instance: bacnet.ObjectInstance(prop.BacnetAddress + w.job.AddressOffset),
+		}
+		d, err := readValue(w.slave.bacnetClient, w.slave.device, objID)
 		if err != nil {
 			w.log.Error("failed to read", log.Error(err))
 			continue
 		}
-		objID := d.(bacnet.ObjectID)
-		if objID.Type == bacnet.BacnetDevice {
-			continue
-		}
-		d, err = readValue(w.slave.bacnetClient, w.slave.device, objID)
-		if err != nil {
-			w.log.Error("failed to read", log.Error(err))
-			continue
-		}
-		if pro, ok := w.job.Properties[strconv.FormatUint(uint64(objID.Type),
-			10)+":"+strconv.FormatUint(uint64(objID.Instance), 10)]; ok {
-			temp[pro.Name] = d
-		}
+		temp[prop.Name] = d
 	}
 
 	r := v1.Report{}

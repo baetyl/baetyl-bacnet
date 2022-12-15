@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/baetyl/baetyl-bacnet/bacip"
-	"github.com/baetyl/baetyl-bacnet/bacnet"
-	"github.com/baetyl/baetyl-bacnet/dmp"
 	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
 	v2log "github.com/baetyl/baetyl-go/v2/log"
 	"github.com/baetyl/baetyl-go/v2/spec/v1"
+
+	"github.com/baetyl/baetyl-bacnet/bacip"
+	"github.com/baetyl/baetyl-bacnet/bacnet"
+	"github.com/baetyl/baetyl-bacnet/dmp"
 )
 
 type Bacnet struct {
@@ -130,7 +131,7 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 
 				objID := bacnet.ObjectID{
 					Type:     bacnet.ObjectType(prop.BacnetType),
-					Instance: bacnet.ObjectInstance(prop.BacnetAddress),
+					Instance: bacnet.ObjectInstance(prop.BacnetAddress + w.job.AddressOffset),
 				}
 				err = writeValue(w.slave.bacnetClient, w.slave.device, objID, bacnet.PropertyValue{
 					Type:  bacnet.TypeBoolean,
