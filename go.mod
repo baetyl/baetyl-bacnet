@@ -3,10 +3,9 @@ module github.com/baetyl/baetyl-bacnet
 go 1.18
 
 require (
-	github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221108044136-8321859db5e3
+	github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221215021824-6a9a8f8736cc
+	github.com/jinzhu/copier v0.1.0
 	github.com/matryer/is v1.4.0
-	github.com/stretchr/testify v1.7.0
-	gopkg.in/yaml.v2 v2.2.8
 )
 
 require (
@@ -15,7 +14,6 @@ require (
 	github.com/containerd/containerd v1.3.4 // indirect
 	github.com/creasty/defaults v1.4.0 // indirect
 	github.com/crsmithdev/goexpr v0.0.0-20150309021426-69a8c42346f1 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
@@ -29,7 +27,6 @@ require (
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
 	github.com/google/uuid v1.0.0 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect
-	github.com/jinzhu/copier v0.1.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/klauspost/compress v1.8.2 // indirect
 	github.com/klauspost/cpuid v1.2.1 // indirect
@@ -42,7 +39,6 @@ require (
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/pierrec/lz4 v2.5.2+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/qiangxue/fasthttp-routing v0.0.0-20160225050629-6ccdc2a18d87 // indirect
 	github.com/sirupsen/logrus v1.6.0 // indirect
 	github.com/spf13/cast v1.1.0 // indirect
@@ -62,6 +58,7 @@ require (
 	gopkg.in/inf.v0 v0.9.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gopkg.in/tomb.v2 v2.0.0-20161208151619-d5d1b5820637 // indirect
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	k8s.io/api v0.0.0-20190819141258-3544db3b9e44 // indirect
 	k8s.io/apimachinery v0.0.0-20190817020851-f2f3a405f61d // indirect

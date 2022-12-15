@@ -7,8 +7,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/abiosoft/ishell v2.0.0+incompatible/go.mod h1:HQR9AqF2R3P4XXpMpI0NAzgHf/aS6+zVXRj14cVk9qg=
 github.com/abiosoft/readline v0.0.0-20180607040430-155bce2042db/go.mod h1:rB3B4rKii8V21ydCbIzH5hZiCQE7f5E9SzUb/ZZx530=
-github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221108044136-8321859db5e3 h1:kI1oIaKSW8xQS76K/DtvcNcMk6e520FVaBJgb9yq5lQ=
-github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221108044136-8321859db5e3/go.mod h1:6BFRsODwGb1QNG1YWyz/2lCR/4fu/QjxXQbM3OblsH4=
+github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221215021824-6a9a8f8736cc h1:NTSstZ9lenVv5w/6RVOVCy3QDqB+xSDn33KOv0wkk9I=
+github.com/baetyl/baetyl-go/v2 v2.2.4-0.20221215021824-6a9a8f8736cc/go.mod h1:6BFRsODwGb1QNG1YWyz/2lCR/4fu/QjxXQbM3OblsH4=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
@@ -141,8 +141,6 @@ github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFR
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/rogpeppe/go-internal v1.8.0 h1:FCbCCtXNOY3UtUuHUYaghJg4y7Fd14rXifAYUAtL9R8=
 github.com/rogpeppe/go-internal v1.8.0/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
-github.com/scopeccsky/bacnet v0.1.1 h1:gcrZV9sdt/+qwljeb/9o/Z8gTGBkOuw2xLutpybPg6g=
-github.com/scopeccsky/bacnet v0.1.1/go.mod h1:tDyNa4XM/4E9woN+VRZ0WW0q8Yz16HnR3hvzzP2+Mxw=
 github.com/sirupsen/logrus v1.6.0 h1:UBcNElsrwanuuMsnGSlYmtmgbb23qDR5dG+6X6Oo89I=
 github.com/sirupsen/logrus v1.6.0/go.mod h1:7uNnSEd1DgxDLC74fIahvMZmmYsHGZGEOFrfsX/uA88=
 github.com/spf13/cast v1.1.0 h1:0Rhw4d6C8J9VPu6cjZLIhZ8+aAOHcDvGeKn+cq5Aq3k=
