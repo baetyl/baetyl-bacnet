@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/baetyl/baetyl-bacnet/bacip"
-	"github.com/baetyl/baetyl-bacnet/bacnet"
-	"github.com/baetyl/baetyl-bacnet/dmp"
 	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
 	v2log "github.com/baetyl/baetyl-go/v2/log"
 	"github.com/baetyl/baetyl-go/v2/spec/v1"
+
+	"github.com/baetyl/baetyl-bacnet/bacip"
+	"github.com/baetyl/baetyl-bacnet/bacnet"
+	"github.com/baetyl/baetyl-bacnet/dmp"
 )
 
 type Bacnet struct {
