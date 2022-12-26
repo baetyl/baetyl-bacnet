@@ -274,10 +274,18 @@ func (c *Client) WhoIs(data WhoIs, timeout time.Duration) ([]bacnet.Device, erro
 						if iam.ObjectID.Instance >= bacnet.ObjectInstance(*data.Low) &&
 							iam.ObjectID.Instance <= bacnet.ObjectInstance(*data.High) {
 							addr := bacnet.AddressFromUDP(r.src)
+							if r.bvlc.NPDU.Source != nil {
+								addr.Net = r.bvlc.NPDU.Source.Net
+								addr.Adr = r.bvlc.NPDU.Source.Adr
+							}
 							set[*iam] = *addr
 						}
 					} else {
 						addr := bacnet.AddressFromUDP(r.src)
+						if r.bvlc.NPDU.Source != nil {
+							addr.Net = r.bvlc.NPDU.Source.Net
+							addr.Adr = r.bvlc.NPDU.Source.Adr
+						}
 						set[*iam] = *addr
 					}
 
