@@ -133,19 +133,15 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 					Type:     bacnet.ObjectType(prop.BacnetType),
 					Instance: bacnet.ObjectInstance(prop.BacnetAddress),
 				}
-				err = writeValue(w.slave.bacnetClient, w.slave.device, objID, bacnet.PropertyValue{
-					Type:  bacnet.TypeBoolean,
-					Value: true,
-				}, bacnet.PropertyIdentifier{
-					Type: bacnet.OutOfService,
-				})
-				if err != nil {
-					return err
-				}
 				var ty bacnet.PropertyValueType
 				switch value.(type) {
 				case bool:
 					ty = bacnet.TypeBoolean
+				case int32:
+					ty = bacnet.TypeEnumerated
+					if rst, ok := value.(int32); ok {
+						value = uint32(rst)
+					}
 				default:
 					ty = bacnet.TypeReal
 				}
@@ -173,7 +169,7 @@ func writeValue(c *bacip.Client, device bacnet.Device, object bacnet.ObjectID, p
 		ObjectID:      object,
 		Property:      property,
 		PropertyValue: propertyValue,
-		Priority:      bacnet.Available16,
+		Priority:      bacnet.ManualLifeSafety1,
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
