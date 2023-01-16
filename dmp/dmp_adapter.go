@@ -126,7 +126,7 @@ func ParseValueToUint32(v interface{}) (uint32, error) {
     case int64:
         return uint32(v.(int64)), nil
     case float32:
-        return uint32(v.(float64)), nil
+        return uint32(v.(float32)), nil
     case float64:
         return uint32(v.(float64)), nil
     default:
