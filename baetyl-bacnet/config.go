@@ -24,10 +24,11 @@ type Job struct {
 }
 
 type Property struct {
-	Id            string `yaml:"id" json:"id"`
-	Name          string `yaml:"name" json:"name"`
-	Type          string `yaml:"type" json:"type"`
-	Mode          string `yaml:"mode" json:"mode"`
-	BacnetType    uint   `yaml:"bacnetType" json:"bacnetType"`
-	BacnetAddress uint   `yaml:"bacnetAddress" json:"bacnetAddress"`
+	Id                   string `yaml:"id" json:"id"`
+	Name                 string `yaml:"name" json:"name"`
+	Type                 string `yaml:"type" json:"type"`
+	Mode                 string `yaml:"mode" json:"mode"`
+	BacnetType           uint   `yaml:"bacnetType" json:"bacnetType"`
+	BacnetAddress        uint   `yaml:"bacnetAddress" json:"bacnetAddress"`
+	ApplicationTagNumber byte   `yaml:"applicationTagNumber" json:"applicationTagNumber"`
 }
