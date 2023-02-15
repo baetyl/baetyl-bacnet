@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 	"time"
 
 	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
@@ -119,14 +120,25 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 		for _, prop := range w.job.Properties {
 			if propName == prop.Name {
 				var value interface{}
-				switch propVal.(type) {
-				case float64:
-					value, err = dmp.ParsePropertyValue(prop.Type, propVal.(float64))
+				switch bacnet.PropertyValueType(prop.ApplicationTagNumber) {
+				case bacnet.TypeBoolean:
+					value, err = dmp.ParseValueToBool(propVal)
+					if err != nil {
+						return err
+					}
+				case bacnet.TypeReal:
+					value, err = dmp.ParseValueToFloat32(propVal)
+					if err != nil {
+						return err
+					}
+				case bacnet.TypeEnumerated:
+					value, err = dmp.ParseValueToUint32(propVal)
+					if err != nil {
+						return err
+					}
 				default:
-					value = propVal
-				}
-				if err != nil {
-					return err
+					return errors.New(fmt.Sprintf("unsupported type conversion.prop name: %v, prop type: %v, application tag num: %v",
+						propName, reflect.TypeOf(propVal).Name(), prop.ApplicationTagNumber))
 				}
 
 				objID := bacnet.ObjectID{
@@ -134,26 +146,7 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 					Instance: bacnet.ObjectInstance(prop.BacnetAddress),
 				}
 				err = writeValue(w.slave.bacnetClient, w.slave.device, objID, bacnet.PropertyValue{
-					Type:  bacnet.TypeBoolean,
-					Value: true,
-				}, bacnet.PropertyIdentifier{
-					Type: bacnet.OutOfService,
-				})
-				if err != nil {
-					return err
-				}
-				var ty bacnet.PropertyValueType
-				switch value.(type) {
-				case bool:
-					ty = bacnet.TypeBoolean
-				default:
-					ty = bacnet.TypeReal
-				}
-				if err != nil {
-					return err
-				}
-				err = writeValue(w.slave.bacnetClient, w.slave.device, objID, bacnet.PropertyValue{
-					Type:  ty,
+					Type:  bacnet.PropertyValueType(prop.ApplicationTagNumber),
 					Value: value,
 				}, bacnet.PropertyIdentifier{
 					Type: bacnet.PresentValue,
