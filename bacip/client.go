@@ -206,7 +206,7 @@ func (c *Client) WhoIs(data WhoIs, timeout time.Duration) ([]bacnet.Device, erro
 		ExpectingReply:        false,
 		Priority:              Normal,
 		Destination: &bacnet.Address{
-			Net: uint16(0xffff),
+			Net: uint16(0xffff), // global broadcast
 		},
 		Source: nil,
 		ADPU: &APDU{
@@ -214,7 +214,7 @@ func (c *Client) WhoIs(data WhoIs, timeout time.Duration) ([]bacnet.Device, erro
 			ServiceType: ServiceUnconfirmedWhoIs,
 			Payload:     &data,
 		},
-		HopCount: 255,
+		HopCount: 255, // router count
 	}
 
 	rChan := make(chan struct {
