@@ -107,3 +107,46 @@ func ParsePropertyValue(tpy string, val float64) (interface{}, error) {
         return nil, errors.Trace(dmcontext.ErrTypeNotSupported)
     }
 }
+
+func ParseValueToFloat32(v interface{}) (float32, error) {
+    switch v.(type) {
+    case int16:
+        return float32(v.(int16)), nil
+    case int32:
+        return float32(v.(int32)), nil
+    case int64:
+        return float32(v.(int64)), nil
+    case float32:
+        return v.(float32), nil
+    case float64:
+        return float32(v.(float64)), nil
+    default:
+        return 0, errors.New("unsupported value type")
+    }
+}
+
+func ParseValueToBool(v interface{}) (bool, error) {
+    switch v.(type) {
+    case bool:
+        return v.(bool), nil
+    default:
+        return false, errors.New("unsupported value type except bool")
+    }
+}
+
+func ParseValueToUint32(v interface{}) (uint32, error) {
+    switch v.(type) {
+    case int16:
+        return uint32(v.(int16)), nil
+    case int32:
+        return uint32(v.(int32)), nil
+    case int64:
+        return uint32(v.(int64)), nil
+    case float32:
+        return uint32(v.(float32)), nil
+    case float64:
+        return uint32(v.(float64)), nil
+    default:
+        return 0, errors.New("unsupported value type")
+    }
+}
