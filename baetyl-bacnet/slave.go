@@ -35,7 +35,7 @@ func NewSlave(info *dm.DeviceInfo, cfg SlaveConfig) (*Slave, error) {
 			return slave, nil
 		}
 	}
-	devs, err := bacnetClient.WhoIs(bacip.WhoIs{}, 2*time.Second)
+	devs, err := bacnetClient.WhoIs(bacip.WhoIs{}, 10*time.Second)
 	if err != nil {
 		return nil, errors.Trace(err)
 	}
