@@ -35,9 +35,17 @@ func NewSlave(info *dm.DeviceInfo, cfg SlaveConfig) (*Slave, error) {
 			return slave, nil
 		}
 	}
-	devs, err := bacnetClient.WhoIs(bacip.WhoIs{}, 10*time.Second)
-	if err != nil {
-		return nil, errors.Trace(err)
+	var devs []bacnet.Device
+	for {
+		log.L().Debug("Search devices on", log.Any("address", cfg.Address))
+		var searchErr error
+		devs, searchErr = bacnetClient.WhoIs(bacip.WhoIs{}, 5*time.Second)
+		if searchErr != nil {
+			return nil, errors.Trace(searchErr)
+		}
+		if devs != nil && len(devs) != 0 {
+			break
+		}
 	}
 	log.L().Info("Find devices:", log.Any("devices", devs))
 	devices = devs

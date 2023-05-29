@@ -111,7 +111,6 @@ func (bac *Bacnet) DeltaCallback(info *dm.DeviceInfo, delta v1.Delta) error {
 			continue
 		}
 		propVal, err := dmp.GetPropValueByModelName(key, val, accessTemplate)
-		println(propVal)
 		if err != nil {
 			bac.log.Warn("get prop value err", v2log.Any("name", propName))
 			continue
