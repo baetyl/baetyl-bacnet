@@ -1,4 +1,4 @@
-//Package bacip implements a Bacnet/IP client
+// Package bacip implements a Bacnet/IP client
 package bacip
 
 import (
@@ -50,9 +50,9 @@ func broadcastAddr(n *net.IPNet) (net.IP, error) {
 	return ip, nil
 }
 
-//NewClient creates a new baetyl-bacnet client. It binds on the given port
-//and network interface (eth0 for example). If Port if 0, the default
-//baetyl-bacnet port is used
+// NewClient creates a new baetyl-bacnet client. It binds on the given port
+// and network interface (eth0 for example). If Port if 0, the default
+// baetyl-bacnet port is used
 func NewClient(netInterface string, port int) (*Client, error) {
 	c := &Client{subscriptions: &Subscriptions{}, transactions: NewTransactions(), Logger: NoOpLogger{}}
 	i, err := net.InterfaceByName(netInterface)
@@ -157,8 +157,8 @@ func (c *Client) listen() {
 					c.Logger.Error("panic in handle message: ", r)
 				}
 			}()
-			err := c.handleMessage(addr, b[:i])
-			if err != nil {
+			handleErr := c.handleMessage(addr, b[:i])
+			if handleErr != nil {
 				c.Logger.Error("handle msg: ", err)
 			}
 		}()

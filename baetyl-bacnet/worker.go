@@ -50,15 +50,17 @@ func (w *Worker) Execute() error {
 		return err
 	}
 	for _, model := range accessTemplate.Mappings {
+		var params []string
 		args := make(map[string]interface{})
-		params, err := dm.ParseExpression(model.Expression)
+		params, err = dm.ParseExpression(model.Expression)
 		if err != nil {
 			w.log.Warn("parse expression failed", log.Any("expression", model.Expression), log.Error(err))
 			continue
 		}
 		for _, param := range params {
+			var mappingName string
 			id := param[1:]
-			mappingName, err := dmp.GetMappingName(id, accessTemplate)
+			mappingName, err = dmp.GetMappingName(id, accessTemplate)
 			if err != nil {
 				w.log.Warn("get mapping failed", log.Any("id", id), log.Error(err))
 				continue
@@ -70,7 +72,8 @@ func (w *Worker) Execute() error {
 			}
 			args[param] = value
 		}
-		modelValue, err := dm.ExecExpression(model.Expression, args, model.Type)
+		var modelValue interface{}
+		modelValue, err = dm.ExecExpression(model.Expression, args, model.Type)
 		if err != nil {
 			w.log.Warn("exec expression failed", log.Any("expression", model.Expression),
 				log.Any("args", args), log.Any("mapping type", model.Type), log.Error(err))
@@ -79,7 +82,7 @@ func (w *Worker) Execute() error {
 		r[model.Attribute] = modelValue
 	}
 
-	if err := w.ctx.ReportDeviceProperties(w.slave.info, r); err != nil {
+	if err = w.ctx.ReportDeviceProperties(w.slave.info, r); err != nil {
 		return err
 	}
 	return nil
