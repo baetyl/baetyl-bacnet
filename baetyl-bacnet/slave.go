@@ -1,12 +1,14 @@
 package baetyl_bacnet
 
 import (
-	"errors"
 	"time"
+
+	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
+	"github.com/baetyl/baetyl-go/v2/errors"
+	"github.com/baetyl/baetyl-go/v2/log"
 
 	"github.com/baetyl/baetyl-bacnet/bacip"
 	"github.com/baetyl/baetyl-bacnet/bacnet"
-	dm "github.com/baetyl/baetyl-go/v2/dmcontext"
 )
 
 var bacnetClient *bacip.Client
@@ -23,7 +25,7 @@ func NewSlave(info *dm.DeviceInfo, cfg SlaveConfig) (*Slave, error) {
 	if bacnetClient == nil {
 		c, err := bacip.NewClientByIp(cfg.Address, cfg.Port)
 		if err != nil {
-			return nil, err
+			return nil, errors.Trace(err)
 		}
 		bacnetClient = c
 	}
@@ -35,8 +37,9 @@ func NewSlave(info *dm.DeviceInfo, cfg SlaveConfig) (*Slave, error) {
 	}
 	devs, err := bacnetClient.WhoIs(bacip.WhoIs{}, 2*time.Second)
 	if err != nil {
-		return nil, err
+		return nil, errors.Trace(err)
 	}
+	log.L().Info("Find devices:", log.Any("devices", devs))
 	devices = devs
 	return generateSlave(info, cfg)
 }
