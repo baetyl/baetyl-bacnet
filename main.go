@@ -60,6 +60,7 @@ func genConfig(ctx dm.Context) (*baetyl_bacnet.Config, error) {
 					jobMap.Type = prop.Type
 					jobMap.Mode = prop.Mode
 					jobMap.BacnetType = visitor.BacnetType
+					jobMap.ApplicationTagNumber = visitor.ApplicationTagNumber
 					jobMap.BacnetAddress = visitor.BacnetAddress + accessConfig.Bacnet.AddressOffset
 					jobMaps[strconv.FormatUint(uint64(jobMap.BacnetType), 10)+":"+
 						strconv.FormatUint(uint64(jobMap.BacnetAddress), 10)] = jobMap
@@ -67,10 +68,10 @@ func genConfig(ctx dm.Context) (*baetyl_bacnet.Config, error) {
 			}
 		}
 		job := baetyl_bacnet.Job{
-			Device: devInfo.Name,
-			Interval: accessConfig.Bacnet.Interval,
-			Properties: jobMaps,
-			DeviceId: accessConfig.Bacnet.DeviceId,
+			Device:        devInfo.Name,
+			Interval:      accessConfig.Bacnet.Interval,
+			Properties:    jobMaps,
+			DeviceId:      accessConfig.Bacnet.DeviceId,
 			AddressOffset: accessConfig.Bacnet.AddressOffset,
 		}
 		jobs = append(jobs, job)
